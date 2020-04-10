@@ -4,16 +4,29 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import cliente
 from .serializer import ClienteSerializer
+import json
 
 
 @api_view(['GET', 'POST'])
 def clienteReq(request):
 
     if request.method == 'GET':
-        clientes=cliente.objects.all()
-        serializer = ClienteSerializer(clientes, many=True)
-        #user = User.objects.get(pk=1).only('id', 'username')
-        return Response(serializer.data)
+
+        user = request.GET['usuario']
+        password=request.GET['contrasenia']
+
+        try:
+            usuarioxd = cliente.objects.get(usuario=user, contrasenia=password)
+            return Response({'validate': True}, status=status.HTTP_200_OK)
+        except :
+            return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
 
     elif request.method == 'POST':
         serializer = ClienteSerializer(data=request.data)
