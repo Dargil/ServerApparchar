@@ -9,6 +9,6 @@ class cliente(models.Model):
     telefono = models.CharField('telefono', max_length=100)
     usuario = models.CharField('usuario', max_length=40, primary_key=True)
     contrasenia = models.CharField('contrasenia', max_length=100)
-    #foto = models.CharField('foto', max_length=100)
+    foto = models.CharField('foto', max_length=100)
 
 
