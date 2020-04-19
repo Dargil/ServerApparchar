@@ -2,6 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 #este van a ser mis modelos
 
+class cliente(models.Model):
+    nombre = models.CharField('nombre', max_length=100)
+    edad = models.IntegerField(null=True)
+    correo = models.CharField('correo', max_length=40)
+    telefono = models.CharField('telefono', max_length=100)
+    usuario = models.CharField('usuario', max_length=40, primary_key=True)
+    contrasenia = models.CharField('contrasenia', max_length=100)
+    foto = models.CharField('foto', max_length=100, null=True)
+
 class User(AbstractUser):
     NIT=models.CharField(max_length=150,blank=True,null=True)
     direccion=models.CharField(max_length=150,blank=True,null=True)
@@ -30,9 +39,8 @@ class Evento(models.Model):
     fecha =models.DateField()
 
 class EventoCategoria(models.Model):
-    evento=models.ForeignKey(Evento, on_delete=models.CASCADE)
-    categoria=models.ForeignKey(Categoria,on_delete=models.CASCADE)
-
+    evento=models.ForeignKey(Evento,related_name='evento',on_delete=models.CASCADE)
+    categoria=models.ForeignKey(Categoria,related_name="categoria", on_delete=models.CASCADE)
 
 class EventoEmpresa(models.Model):
     evento=models.ForeignKey(Evento, on_delete=models.CASCADE)

@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import *
+from .models import cliente
 
+class ClienteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = cliente
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,16 +26,9 @@ class LugarSerializer(serializers.ModelSerializer):
         model = Lugar
         fields = '__all__'
 
-
-class CategoriaSerializer(serializers.ModelSerializer):
+class EventoEmpresaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Categoria
-        fields = '__all__'
-
-
-class EventoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Evento
+        model = EventoEmpresa
         fields = '__all__'
 
 
@@ -38,9 +36,14 @@ class EventoCategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventoCategoria
         fields = '__all__'
-
-
-class EventoEmpresaSerializer(serializers.ModelSerializer):
+class CategoriaSerializer(serializers.ModelSerializer):
+    categoria=EventoCategoriaSerializer(many=True,read_only=True)
     class Meta:
-        model = EventoEmpresa
+        model = Categoria
+        fields = '__all__'
+
+class EventoSerializer(serializers.ModelSerializer):
+    evento=EventoCategoriaSerializer(many=True,read_only=True)
+    class Meta:
+        model = Evento
         fields = '__all__'
