@@ -9,11 +9,6 @@ from .serializer import ClienteSerializer
 import json
 import boto3
 
-
-
-
-
-
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
@@ -30,24 +25,19 @@ class EvCaListViewset(viewsets.ModelViewSet):
     queryset = EventoCategoria.objects.select_related()
     serializer_class = EventoCategoriaSerializer
 
-
-
-
-
-
-
 @api_view(['GET', 'POST'])
 def clienteReq(request):
 
     if request.method == 'GET':
 
         user = request.GET['usuario']
-        password=request.GET['contrasenia']
+        password=request.GET['contrasenia']       
 
         try:
             usuarioxd = cliente.objects.get(usuario=user, contrasenia=password)
             return Response({'validate': True}, status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
+            print("error",e)
             return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'POST':
@@ -55,23 +45,22 @@ def clienteReq(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 @api_view(['GET', 'POST'])
 def fotoPerfilUsuario(request):
     if request.method=='POST':
         photo=request.data
         ruta = request.GET['ruta']
-        #try:
-         #   client=boto3.client('s3')
-          #  client.upload_fileobj(photo, "apparchar", ruta)   
-           # return Response(status=status.HTTP_200_OK)
-        #except:
-         #   return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            client=boto3.client('s3')
+            client.upload_fileobj(photo.get('myfile'), "apparchar", ruta)
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print("error", e.message)
+            return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
 
-        client=boto3.client('s3')
-        client.upload_fileobj(photo.get('myfile'), "apparchar", ruta)
-        return Response({'validate': True}, status=status.HTTP_200_OK)
 
 
 class UserViewSet(viewsets.ModelViewSet):
