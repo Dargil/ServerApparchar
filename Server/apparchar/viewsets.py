@@ -45,20 +45,22 @@ def clienteReq(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
         
 
 @api_view(['GET', 'POST'])
 def fotoPerfilUsuario(request):
     if request.method=='POST':
         photo=request.data
+        
         ruta = request.GET['ruta']
         try:
             client=boto3.client('s3')
-            client.upload_fileobj(photo.get('myfile'), "apparchar", ruta)
-            return Response(status=status.HTTP_200_OK)
+            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg')
+            return Response({'validate':True},status=status.HTTP_200_OK)
         except Exception as e:
-            print("error", e.message)
+            print("error", e)
             return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -1,0 +1,17 @@
+asgiref==3.2.7
+boto3==1.12.47
+botocore==1.15.47
+Django==3.0.5
+django-cors-headers==3.2.1
+django-rest-auth==0.9.5
+djangorestframework==3.11.0
+docutils==0.15.2
+jmespath==0.9.5
+pkg-resources==0.0.0
+psycopg2-binary==2.8.5
+python-dateutil==2.8.1
+pytz==2020.1
+s3transfer==0.3.3
+six==1.14.0
+sqlparse==0.3.1
+urllib3==1.25.9
