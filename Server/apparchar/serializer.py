@@ -47,3 +47,10 @@ class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = '__all__'
+
+class CalificacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Calificacion
+        fields = '__all__'
+
+

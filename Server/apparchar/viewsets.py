@@ -65,6 +65,7 @@ def fotoPerfilUsuario(request):
 
 
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset= User.objects.all()
     serializer_class = UserSerializer
@@ -88,3 +89,24 @@ class EventoCategoriaViewSet(viewsets.ModelViewSet):
 class EventoEmpresaViewSet(viewsets.ModelViewSet):
     queryset= EventoEmpresa.objects.all()
     serializer_class = EventoEmpresaSerializer
+
+class ClientesViewSet(viewsets.ModelViewSet):
+    queryset = cliente.objects.all()
+    serializer_class = ClienteSerializer
+
+
+@api_view(['GET', 'POST'])
+def calificacionReq(request):
+    if request.method == 'POST':
+        serializer = CalificacionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'GET':
+        idEvento = request.GET['evento']
+        calificaciones = Calificacion.objects.filter(evento_id=idEvento)
+        return Response(calificaciones,status=status.HTTP_201_CREATED)
+
+
