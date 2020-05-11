@@ -57,7 +57,8 @@ def fotoPerfilUsuario(request):
         ruta = request.GET['ruta']
         try:
             client=boto3.client('s3')
-            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg')
+            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
+            #client.upload_fileobj(photo.get('foto'),'bucketxdxdxd',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
             return Response({'validate':True},status=status.HTTP_200_OK)
         except Exception as e:
             print("error", e)
@@ -101,12 +102,45 @@ def calificacionReq(request):
         serializer = CalificacionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
         else:
-            return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
     elif request.method == 'GET':
         idEvento = request.GET['evento']
         calificaciones = Calificacion.objects.filter(evento_id=idEvento)
-        return Response(calificaciones,status=status.HTTP_201_CREATED)
+        serializer = CalificacionSerializer(calificaciones,many=True) 
+        #return Response(calificaciones)
+        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def fotoCalificacion(request):
+    if request.method=='POST':
+        photo=request.data        
+        ruta = request.GET['ruta']
+        try:
+            client=boto3.client('s3')
+            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
+           #client.upload_fileobj(photo.get('foto'),'bucketxdxdxd',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
+            return Response({'validate':True},status=status.HTTP_200_OK)
+        except Exception as e:
+            print("error", e)
+            
+
+
+
+@api_view(['GET', 'POST'])
+def eventReq(request):
+    if request.method== 'GET':
+        idEvento = request.GET['evento']
+        try:            
+            evento=Evento.objects.get(pk=idEvento)
+            serializer = EventoSerializer(evento)         
+            return Response(serializer.data)
+        except Exception as e:
+            print("error",e)
+           
 
 

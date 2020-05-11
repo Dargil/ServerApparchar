@@ -18,6 +18,8 @@ urlpatterns = [
     path('cliente/', clienteReq),
     path('cliente/uploadFoto',fotoPerfilUsuario),
     path('calificacion/',calificacionReq),
+    path('calificacion/uploadFoto',fotoCalificacion),    
+    path('onlyEvent/',eventReq),
     path('', include(router.urls)),
 ]
 
