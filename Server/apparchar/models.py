@@ -33,7 +33,7 @@ class Evento(models.Model):
     nombre =models.CharField(max_length=255,blank=True,null=True)
     hora_inicio =models.TimeField()
     hora_final =models.TimeField()
-    lugar  = models.ForeignKey(Lugar, on_delete=models.CASCADE)
+    lugar  = models.ForeignKey(Lugar, related_name='lugar',on_delete=models.CASCADE)
     descripcion =models.CharField(max_length=255,blank=True,null=True)
     foto  =models.CharField(max_length=255,blank=True,null=True) 
     fecha =models.DateField()

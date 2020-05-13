@@ -70,7 +70,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 class LugarViewSet(viewsets.ModelViewSet):
-    queryset= Lugar.objects.all()
+    queryset= Lugar.objects.select_related()
     serializer_class = LugarSerializer
 
 class CategoriaViewSet(viewsets.ModelViewSet):

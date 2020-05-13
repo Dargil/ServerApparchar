@@ -20,12 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-
-class LugarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lugar
-        fields = '__all__'
-
 class EventoEmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventoEmpresa
@@ -47,3 +41,10 @@ class EventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evento
         fields = '__all__'
+
+class LugarSerializer(serializers.ModelSerializer):
+    lugar=EventoSerializer(many=True,read_only=True)
+    class Meta:
+        model = Lugar
+        fields = '__all__'
+
