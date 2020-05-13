@@ -16,6 +16,8 @@ router.register('eventoempresa',EventoEmpresaViewSet)
 urlpatterns = [
     path('cliente/', clienteReq),
     path('cliente/uploadFoto',fotoPerfilUsuario),
+    path('upload_evento_foto/',upload_evento_foto),
+    path('new_evento/',new_evento),
     path('', include(router.urls)),
 ]
 

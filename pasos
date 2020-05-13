@@ -1,0 +1,26 @@
+sudo apt-get update
+sudo apt-get install
+sudo apt install virtualenv
+mkdir project
+cd project/
+virtualenv -p python3 env
+source env/bin/activate
+
+cd project/
+python -m pip install Django
+sudo apt-get install -y postgresql-client
+pip install psycopg2-binary
+pip install boto3
+pip install django-cors-headers
+pip install django-rest-auth
+pip install djangorestframework
+
+git clone https://github.com/Dargil/ServerApparchar.git
+cd ServerApparchar/
+cd Server/
+python manage.py makemigrations
+python manage.py migrate
+pip install dj-static
+python -m pip install gunicorn
+cd Server
+gunicorn --bind 0.0.0.0:8080 Server.wsgi
