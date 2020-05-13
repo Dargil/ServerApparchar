@@ -48,3 +48,7 @@ class LugarSerializer(serializers.ModelSerializer):
         model = Lugar
         fields = '__all__'
 
+class CalificacionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Calificacion
+        fields = '__all__'

@@ -11,6 +11,7 @@ router.register('categoria',CategoriaListViewset)
 router.register('evento',EventoListViewset)
 router.register('eventocategoria',EvCaListViewset)
 router.register('eventoempresa',EventoEmpresaViewSet)
+router.register('clientes',ClientesViewSet)
 
 
 urlpatterns = [
@@ -18,6 +19,9 @@ urlpatterns = [
     path('cliente/uploadFoto',fotoPerfilUsuario),
     path('upload_evento_foto/',upload_evento_foto),
     path('new_evento/',new_evento),
+    path('calificacion/',calificacionReq),
+    path('calificacion/uploadFoto',fotoCalificacion),    
+    path('onlyEvent/',eventReq),
     path('', include(router.urls)),
 ]
 

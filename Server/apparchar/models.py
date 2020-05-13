@@ -45,3 +45,13 @@ class EventoCategoria(models.Model):
 class EventoEmpresa(models.Model):
     evento=models.ForeignKey(Evento, on_delete=models.CASCADE)
     empresa=models.ForeignKey(User,on_delete=models.CASCADE)
+
+class Calificacion(models.Model):
+    porcentaje=models.FloatField(null=True)
+    comentario=models.CharField(max_length=100, blank=True,null=True)
+    multimedia=models.CharField(max_length=100, null=True)
+    hora=models.TimeField()
+    usuariocliente=models.ForeignKey(cliente,on_delete=models.CASCADE)
+    evento=models.ForeignKey(Evento,on_delete=models.CASCADE)
+    fecha= models.DateField()
+

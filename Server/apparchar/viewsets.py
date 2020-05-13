@@ -26,9 +26,12 @@ class EvCaListViewset(viewsets.ModelViewSet):
 
 @api_view(['GET', 'POST'])
 def clienteReq(request):
+
     if request.method == 'GET':
+
         user = request.GET['usuario']
-        password=request.GET['contrasenia']  
+        password=request.GET['contrasenia']       
+
         try:
             usuarioxd = cliente.objects.get(usuario=user, contrasenia=password)
             return Response({'validate': True}, status=status.HTTP_200_OK)
@@ -44,15 +47,18 @@ def clienteReq(request):
         else:
             return Response({'validate': False}, status=status.HTTP_400_BAD_REQUEST)
         
+        
 
 @api_view(['GET', 'POST'])
 def fotoPerfilUsuario(request):
     if request.method=='POST':
         photo=request.data
-        ruta = request.GET['name']
+        
+        ruta = request.GET['ruta']
         try:
             client=boto3.client('s3')
-            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg')
+            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
+            #client.upload_fileobj(photo.get('foto'),'bucketxdxdxd',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
             return Response({'validate':True},status=status.HTTP_200_OK)
         except Exception as e:
             print("error", e)
@@ -129,3 +135,55 @@ class EventoCategoriaViewSet(viewsets.ModelViewSet):
 class EventoEmpresaViewSet(viewsets.ModelViewSet):
     queryset= EventoEmpresa.objects.all()
     serializer_class = EventoEmpresaSerializer
+
+class ClientesViewSet(viewsets.ModelViewSet):
+    queryset = cliente.objects.all()
+    serializer_class = ClienteSerializer
+    
+
+@api_view(['GET', 'POST'])
+def calificacionReq(request):
+    if request.method == 'POST':
+        serializer = CalificacionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    elif request.method == 'GET':
+        idEvento = request.GET['evento']
+        calificaciones = Calificacion.objects.filter(evento_id=idEvento)
+        serializer = CalificacionSerializer(calificaciones,many=True) 
+        #return Response(calificaciones)
+        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def fotoCalificacion(request):
+    if request.method=='POST':
+        photo=request.data        
+        ruta = request.GET['ruta']
+        try:
+            client=boto3.client('s3')
+            client.upload_fileobj(photo.get('foto'),'apparchar',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
+           #client.upload_fileobj(photo.get('foto'),'bucketxdxdxd',ruta+'.jpg',ExtraArgs={'ACL':'public-read'})
+            return Response({'validate':True},status=status.HTTP_200_OK)
+        except Exception as e:
+            print("error", e)
+            
+
+
+
+@api_view(['GET', 'POST'])
+def eventReq(request):
+    if request.method== 'GET':
+        idEvento = request.GET['evento']
+        try:            
+            evento=Evento.objects.get(pk=idEvento)
+            serializer = EventoSerializer(evento)         
+            return Response(serializer.data)
+        except Exception as e:
+            print("error",e)
+           
